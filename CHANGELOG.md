@@ -4,10 +4,19 @@ All notable changes to `capzy` are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 follows [Semantic Versioning](https://semver.org/).
 
-## [0.0.1] — Unreleased
+## [0.0.2] — 2026-05-16
 
-Pre-PyPI publish snapshot. Pinned at `0.0.1` until the listing is
-approved; the first published version on PyPI will bump to `0.1.0`.
+### Fixed
+
+- Corrected GitHub repo URL in README, docs, and `pyproject.toml`
+  project metadata (was `github.com/capzy/capzy-pip`, now
+  `github.com/capzy-ai/capzy-pip`).
+- Removed obsolete "PyPI listing pending approval" callouts now that
+  `pip install capzy` works.
+
+## [0.0.1] — 2026-05-16
+
+Initial release on PyPI.
 
 ### Added
 

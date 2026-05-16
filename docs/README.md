@@ -14,4 +14,4 @@ Everything you need to ship a Capzy integration is here:
 9. [Publishing to PyPI](./publishing.md) — internal — how to cut a release once approved.
 
 Need something that's missing? Email **support@capzy.ai** or open an issue at
-[github.com/capzy/capzy-pip/issues](https://github.com/capzy/capzy-pip/issues).
+[github.com/capzy-ai/capzy-pip/issues](https://github.com/capzy-ai/capzy-pip/issues).

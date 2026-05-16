@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "capzy"
-version = "0.0.1"
+version = "0.0.2"
 description = "Official Python SDK for the Capzy captcha-solving API"
 readme = "README.md"
 license = { text = "MIT" }
@@ -45,8 +45,8 @@ dev = ["pytest>=7", "responses>=0.24"]
 [project.urls]
 Homepage = "https://capzy.ai"
 Documentation = "https://capzy.ai/docs"
-Source = "https://github.com/capzy/capzy-pip"
-Issues = "https://github.com/capzy/capzy-pip/issues"
+Source = "https://github.com/capzy-ai/capzy-pip"
+Issues = "https://github.com/capzy-ai/capzy-pip/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["capzy"]

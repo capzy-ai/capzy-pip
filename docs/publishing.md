@@ -1,65 +1,76 @@
-# Publishing to PyPI
+# Publishing a release
 
-> Internal cheat-sheet for cutting a release once the PyPI listing is
-> approved. Pinned to `0.0.1` in the repo until then.
+The repo uploads to PyPI automatically via GitHub Actions + **Trusted
+Publisher (OIDC)** — there are no secrets stored anywhere. The
+`.github/workflows/publish.yml` workflow fires on every GitHub Release
+and uploads the built sdist + wheel.
 
-## Pre-flight checklist
+> Trusted Publisher is configured at
+> https://pypi.org/manage/account/publishing/ → project `capzy` → owner
+> `capzy-ai`, repo `capzy-pip`, workflow `publish.yml`.
 
-- [ ] `pyproject.toml` → bump `version`.
-- [ ] `capzy/__init__.py` → bump `__version__` to match.
-- [ ] `CHANGELOG.md` → add a dated entry.
-- [ ] All examples still run against the live API.
-- [ ] `pytest` is green.
-- [ ] README rendered preview looks right on GitHub.
+## Cutting a release
 
-## Build
+1. **Bump the version** in two places (they must match):
+   - `pyproject.toml` → `version = "X.Y.Z"`
+   - `capzy/_version.py` → `__version__ = "X.Y.Z"`
 
-```bash
-python -m pip install --upgrade build twine
-python -m build
-```
+2. **Add a CHANGELOG entry** in [`CHANGELOG.md`](../CHANGELOG.md) under a
+   new `## [X.Y.Z] — YYYY-MM-DD` heading.
 
-This produces `dist/capzy-X.Y.Z.tar.gz` and `dist/capzy-X.Y.Z-py3-none-any.whl`.
+3. **Commit + push to `main`:**
+   ```bash
+   git add pyproject.toml capzy/_version.py CHANGELOG.md
+   git commit -m "vX.Y.Z"
+   git push origin main
+   ```
 
-## Smoke test the wheel
+4. **Tag + push the tag:**
+   ```bash
+   git tag -a vX.Y.Z -m "vX.Y.Z"
+   git push origin vX.Y.Z
+   ```
 
-```bash
-python -m venv /tmp/capzy-smoke
-/tmp/capzy-smoke/bin/pip install dist/capzy-X.Y.Z-py3-none-any.whl
-/tmp/capzy-smoke/bin/python -c "import capzy; print(capzy.__version__)"
-```
+5. **Draft + publish the release on GitHub:**
+   - https://github.com/capzy-ai/capzy-pip/releases/new
+   - Pick the tag you just pushed.
+   - Title: `vX.Y.Z`.
+   - Body: paste the CHANGELOG entry for this version.
+   - **Publish release.**
 
-## Upload to TestPyPI first
+6. **Watch it deploy:**
+   https://github.com/capzy-ai/capzy-pip/actions — the
+   `Publish to PyPI` workflow runs in ~60 seconds.
 
-```bash
-python -m twine upload --repository testpypi dist/*
-pip install --index-url https://test.pypi.org/simple/ --no-deps capzy
-```
+7. **Verify:**
+   ```bash
+   python -m venv /tmp/capzy-smoke
+   /tmp/capzy-smoke/bin/pip install --upgrade capzy
+   /tmp/capzy-smoke/bin/python -c "import capzy; print(capzy.__version__)"
+   ```
 
-## Upload to PyPI
+## If a release goes wrong
 
-```bash
-python -m twine upload dist/*
-```
+- **Wrong content uploaded:** PyPI does NOT allow re-uploading the same
+  version. You can `yank` the bad release (still installable for people
+  who pinned it, hidden from `pip install capzy`) at
+  https://pypi.org/manage/project/capzy/release/X.Y.Z/ → Yank.
+- **Workflow failed mid-upload:** safe to re-run the failed
+  `Publish to PyPI` job from the Actions tab — Trusted Publisher mints
+  a fresh OIDC token each run.
+- **Need to roll back:** bump version and ship a `X.Y.(Z+1)` with the
+  desired contents. Yanking does not delete; it just deprioritises.
 
-Use an API token, not a password. Store it in `~/.pypirc`:
+## Optional: add a manual-approval gate
 
-```ini
-[pypi]
-  username = __token__
-  password = pypi-AgEIcHl...
-```
+If you want a human-in-the-loop confirmation before each PyPI upload:
 
-## Tag the release
+1. GitHub repo → Settings → Environments → **New environment** → name
+   `pypi` → enable **Required reviewers** and add yourself.
+2. In `.github/workflows/publish.yml`, uncomment the
+   `environment: pypi` line under the `publish` job.
+3. On the PyPI Trusted Publisher form, set **Environment name** to
+   `pypi` to match.
 
-```bash
-git tag -a v0.1.0 -m "v0.1.0: first PyPI release"
-git push origin v0.1.0
-```
-
-## Post-release
-
-- Update the install instructions in the top-level `README.md` (remove
-  the "PyPI listing is pending" callout).
-- Drop the `git+https://...` install instruction or move it under a
-  "Bleeding edge" subsection.
+Every release will then wait for your approval click in the Actions UI
+before uploading.

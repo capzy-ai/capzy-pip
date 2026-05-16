@@ -81,7 +81,7 @@ expects. Don't try to decode them; replay them as-is.
 ### Where do I get support?
 
 - 📧 `support@capzy.ai` — fastest for account / billing questions.
-- 🐛 [github.com/capzy/capzy-pip/issues](https://github.com/capzy/capzy-pip/issues) — bugs in this SDK.
+- 🐛 [github.com/capzy-ai/capzy-pip/issues](https://github.com/capzy-ai/capzy-pip/issues) — bugs in this SDK.
 - 💬 Live chat on the [dashboard](https://capzy.ai/dashboard) — same humans, same response time.
 
 ---

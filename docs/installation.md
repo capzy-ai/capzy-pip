@@ -12,33 +12,31 @@
 pip install capzy
 ```
 
-> ⏳ The PyPI listing is pending approval. Until it goes live, see **Install from source** below.
-
 To upgrade later:
 
 ```bash
 pip install --upgrade capzy
 ```
 
-## Install from source
+## Install from source (bleeding edge)
 
-While the PyPI listing is pending, install straight from GitHub:
+Tracks `main` — useful when you want a fix that hasn't been cut into a release yet:
 
 ```bash
-pip install "git+https://github.com/capzy/capzy-pip.git"
+pip install "git+https://github.com/capzy-ai/capzy-pip.git"
 ```
 
-Pin to a specific tag once releases are cut:
+Pin to a specific tag:
 
 ```bash
-pip install "git+https://github.com/capzy/capzy-pip.git@v0.0.1"
+pip install "git+https://github.com/capzy-ai/capzy-pip.git@v0.0.2"
 ```
 
 ## Verify the install
 
 ```bash
 python -c "import capzy; print(capzy.__version__)"
-# → 0.0.1
+# → 0.0.2
 ```
 
 ## Install in a virtual environment (recommended)
@@ -64,7 +62,7 @@ pip install capzy
 If you've cloned the repo and want to hack on `capzy` itself:
 
 ```bash
-git clone https://github.com/capzy/capzy-pip.git
+git clone https://github.com/capzy-ai/capzy-pip.git
 cd capzy-pip
 python -m venv .venv
 source .venv/bin/activate   # (or .venv\Scripts\Activate.ps1 on Windows)

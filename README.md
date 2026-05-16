@@ -43,11 +43,11 @@ pip install capzy
 
 Requires Python ≥ 3.9 and `requests`. That's it.
 
-> ⚠️ While we wait for our PyPI listing to be approved, you can install straight from the repo:
->
-> ```bash
-> pip install "git+https://github.com/capzy/capzy-pip.git"
-> ```
+Bleeding-edge (straight from `main`):
+
+```bash
+pip install "git+https://github.com/capzy-ai/capzy-pip.git"
+```
 
 ---
 
@@ -386,7 +386,7 @@ Captchas not yet on the price list but actively being worked on:
 - **Native `AsyncCapzyClient`** — `asyncio`-native client, same API surface.
 - **Streaming `solveMany()`** — fan out N tasks, yield as they finish.
 
-Want something prioritised? Open a [GitHub issue](https://github.com/capzy/capzy-pip/issues) or email **support@capzy.ai**.
+Want something prioritised? Open a [GitHub issue](https://github.com/capzy-ai/capzy-pip/issues) or email **support@capzy.ai**.
 
 ---
 
@@ -398,7 +398,7 @@ Want something prioritised? Open a [GitHub issue](https://github.com/capzy/capzy
 - 🔑 **Dashboard / API keys:** https://capzy.ai/dashboard
 - 🆓 **Free credits on sign-up:** https://capzy.ai/auth/register
 - 📜 **Changelog:** [CHANGELOG.md](CHANGELOG.md)
-- 🐛 **Issues:** https://github.com/capzy/capzy-pip/issues
+- 🐛 **Issues:** https://github.com/capzy-ai/capzy-pip/issues
 - 💬 **Support:** support@capzy.ai
 
 ---
