@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "capzy"
+version = "0.0.1"
+description = "Official Python SDK for the Capzy captcha-solving API"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Capzy", email = "support@capzy.ai" }]
+keywords = [
+    "captcha",
+    "captcha-solver",
+    "recaptcha",
+    "turnstile",
+    "cloudflare",
+    "funcaptcha",
+    "geetest",
+    "datadome",
+    "aws-waf",
+    "capzy",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["requests>=2.28"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "responses>=0.24"]
+
+[project.urls]
+Homepage = "https://capzy.ai"
+Documentation = "https://capzy.ai/docs"
+Source = "https://github.com/capzy/capzy-pip"
+Issues = "https://github.com/capzy/capzy-pip/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["capzy"]
