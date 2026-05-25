@@ -127,10 +127,13 @@ Enterprise variant: `type="ReCaptchaV3EnterpriseTaskProxyLess"`
 ```python
 capzy.solve(
     type="FunCaptchaTaskProxyLess",
-    website_url="https://example.com",
-    website_public_key="476068BF-9607-4799-B53D-966BE98E2B81",
-    funcaptcha_api_js_subdomain="client-api.arkoselabs.com",  # optional
-    data='{"blob": "..."}',                                   # optional
+    website_url="https://example.com/signup",
+    website_public_key="<YOUR-PUBLIC-KEY>",
+    # Both values below come from DevTools on YOUR target page (the
+    # Arkose api.js script URL + the POST /fc/gt2/public_key/<pkey>
+    # request payload). Recommended for almost all production sites.
+    funcaptcha_api_js_subdomain="<your-subdomain>.arkoselabs.com",
+    data="<blob-captured-from-target-site>",
 )
 ```
 
@@ -213,6 +216,23 @@ capzy.solve(
 
 Returns: `{"cookie": "datadome=..."}` — set as the `datadome` cookie on subsequent requests.
 
+For higher success rate in `captcha_url` mode, pass session cookies from your already-blocked client. Continuity from your original session is stronger than anything our solver can synthesize:
+
+```python
+capzy.solve(
+    type="DataDomeSliderTask",
+    website_url="https://target.example.com",
+    captcha_url="https://geo.captcha-delivery.com/captcha/?initialCid=...",
+    cookies=[
+        {"name": "datadome", "value": "old_blocked_cookie", "domain": ".target.example.com"},
+        {"name": "datadome", "value": "cd_session", "domain": ".captcha-delivery.com"},
+    ],
+    proxy_type="http", proxy_address="...", proxy_port=8080,
+)
+```
+
+When `cookies` is provided in `captcha_url` mode, the solver skips its warm-up navigation entirely. `ERROR_IP_BLOCKED` means the proxy IP got a hard or soft block from DataDome — retry with a different proxy (mobile or a fresh residential exit).
+
 ## AWS WAF
 
 ```python
@@ -250,11 +270,28 @@ Returns: `{"validate": "..."}`.
 
 ## PerimeterX
 
+> **Proxy is required — there is no ProxyLess variant.** PerimeterX
+> clearance cookies (`_px3` / `_px2` / `_pxhd`) are cryptographically
+> bound to the IP they were issued to, so the solve must run on the
+> SAME proxy your downstream client will replay through. Calls to
+> `AntiPerimeterXTaskProxyLess` return `ERROR_PROXY_REQUIRED`.
+
 ```python
-capzy.solve(type="AntiPerimeterXTaskProxyLess", website_url="https://example.com")
+capzy.solve(
+    type="AntiPerimeterXTask",
+    website_url="https://example.com",
+    proxy_type="http",
+    proxy_address="gw.your-provider.com",
+    proxy_port=10000,
+    proxy_login="your-user",
+    proxy_password="your-pass",
+)
 ```
 
-Returns: `{"cookies": {...}}`.
+Use a sticky residential / mobile / static-ISP proxy. Datacenter IPs
+fail PerimeterX's IP-trust scoring.
+
+Returns: `{"token": "...", "cookies": [...], "userAgent": "..."}`.
 
 ## Alibaba
 
@@ -373,17 +410,43 @@ capzy.solve(
 
 Returns: `{"cookies": {...}}`.
 
-## Akamai BMP (mobile)
+## Akamai Bot Manager
 
 ```python
 capzy.solve(
     type="AntiAkamaiBMPTaskProxyLess",
-    package_name="com.example.app",
-    version="3.3.5",
+    website_url="https://example.com/",
+)
+
+# Or pin the solve to your own proxy so the cookies are bound to your IP:
+capzy.solve(
+    type="AntiAkamaiBMPTask",
+    website_url="https://example.com/",
+    proxy_type="http",
+    proxy_address="123.45.67.89",
+    proxy_port=8080,
+    proxy_login="user",
+    proxy_password="pass",
 )
 ```
 
-Returns: `{"sensor_data": "..."}` — replay in the `X-Acf-Sensor-Data` header.
+Returns:
+
+```python
+{
+    "cookies": [
+        {"name": "_abck",   "value": "...~0~...",    "domain": ".example.com", "path": "/"},
+        {"name": "bm_sz",   "value": "...",          "domain": ".example.com", "path": "/"},
+        {"name": "ak_bmsc", "value": "...",          "domain": ".example.com", "path": "/"},
+    ],
+    "userAgent":   "Mozilla/5.0 (...) Chrome/131.0.0.0 ...",
+    "ipBound":     True,
+    "domain":      "www.example.com",
+    "sensorPosts": 2,
+}
+```
+
+Set every cookie on your HTTP client, reuse the exact `userAgent`, and replay through the same IP that solved the challenge. Akamai cookies are IP-bound and TLS-correlated — a default `requests` / `httpx` TLS handshake fails before the cookies are even checked. Use `curl_cffi`, `tls-client`, or a real browser on replay.
 
 ## Capy
 
