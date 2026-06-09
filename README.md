@@ -22,9 +22,9 @@
 
 > Built by people who were tired of paying half a cent to get back `errorCode: ERROR_NO_AVAILABLE_WORKERS`.
 
-- ⚡️ **Fast.** Median solve <5s for Turnstile / reCAPTCHA v2 / hCaptcha.
+- ⚡️ **Fast.** Median solve <5s for Turnstile / reCAPTCHA v2 / GeeTest.
 - 💸 **Cheap.** Token-bound captchas start at **$0.40 per 1,000 solves**.
-- 🧠 **Solves what others don't.** Native support for **Temu**, **Shopee** (slider + curve), **Binance bCAPTCHA2**, **CaptchaFox**, **MTCaptcha**, **Lemin**, **ALTCHA**, **Yidun**, **Capy** — not just the obvious ones. *(hCaptcha is in active development and not currently sold; status: see [roadmap](#roadmap).)*
+- 🧠 **Solves what others don't.** Native support for **Temu**, **Shopee** (slider + curve), **Binance bCAPTCHA2**, **CaptchaFox**, **MTCaptcha**, **Lemin**, **ALTCHA**, **Yidun**, **Capy** — not just the obvious ones.
 - 🧩 **Drop-in compatible.** Uses the same `createTask` / `getTaskResult` shape your existing scripts already speak. Migration is a one-line `base_url` change.
 - 🆓 **Free credits on sign-up.** Every new account gets **$0.10** in real credits to test in production. No card required.
 - 🔓 **No retainer, no minimum.** Pay-as-you-go. Top up when you want.
@@ -156,7 +156,7 @@ Every captcha below is supported as a **proxyless** task (we handle the upstream
 | AWS WAF (full challenge) | `AntiAwsWafTaskProxyLess` | $0.012 | |
 | AWS WAF (image classify) | `AwsWafClassification` | **$0.0008** | Just the image piece |
 | DataDome Slider | `DataDomeSliderTask` | $0.04 | Proxy required |
-| PerimeterX | `AntiPerimeterXTaskProxyLess` | $0.04 | |
+| PerimeterX | `AntiPerimeterXTask` | $0.04 | Proxy required (IP-bound) |
 | Imperva Incapsula | `AntiImpervaTaskProxyLess` | $0.04 | |
 | Akamai Bot Manager | `AntiAkamaiBMPTaskProxyLess` | $0.05 | Mobile (BMP) |
 | Kasada | `KasadaCaptchaTaskProxyLess` | $0.005 | |
@@ -380,9 +380,6 @@ Per-key concurrency limits exist (visible on your dashboard). When you hit them,
 
 ## Roadmap
 
-Captchas not yet on the price list but actively being worked on:
-
-- **hCaptcha** (incl. Enterprise) — local CV pipeline in late-stage testing; SDK task types (`HCaptchaTaskProxyLess`, etc.) already accepted so your code is forward-compatible.
 - **Native `AsyncCapzyClient`** — `asyncio`-native client, same API surface.
 - **Streaming `solveMany()`** — fan out N tasks, yield as they finish.
 

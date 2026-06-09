@@ -63,15 +63,6 @@ auto-renewal. Stop using the API and you stop being charged. Your
 remaining balance stays in your account; refunds on unused balance are
 available on request.
 
-### Is hCaptcha supported?
-
-Not yet for paying traffic. The solver is in late-stage testing — the
-SDK ships the `HCaptchaTaskProxyLess` / `HCaptchaEnterpriseTaskProxyLess`
-classes so your code is forward-compatible, but `createTask` currently
-returns `ERROR_TASK_TYPE_DISABLED` for those types. Watch the
-[roadmap](../README.md#roadmap) — when it goes live your code works
-without changes.
-
 ### Why are some images / cookies returned as opaque blobs?
 
 Anti-bot platforms (Akamai, Kasada, etc.) encode their tokens

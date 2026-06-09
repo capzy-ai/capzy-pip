@@ -20,11 +20,6 @@ proxy_password="pass",    # optional
 
 See [Proxies](./proxies.md) for when you actually need one.
 
-Currently in **active development** but not yet sold: **hCaptcha** and
-**hCaptcha Enterprise**. Submitting their types now returns
-`ERROR_TASK_TYPE_DISABLED`; the SDK still ships the wire-level
-identifiers so your code is forward-compatible.
-
 ---
 
 ## Cloudflare Turnstile
@@ -455,6 +450,19 @@ capzy.solve(
     type="CapyTaskProxyLess",
     website_url="https://example.com",
     website_key="PUZZLE_...",
+)
+```
+
+For sites that run Capy on their own CDN (white-label), pass `api_server`
+with the host from the page's `<script src="…/puzzle/get_js/?k=…">` tag.
+Default is `https://jp.api.capy.me`; the same key 404s on the wrong host.
+
+```python
+capzy.solve(
+    type="CapyTaskProxyLess",
+    website_url="https://target-site/captcha",
+    website_key="PUZZLE_...",
+    api_server="https://puzzleauth.target-site.com",
 )
 ```
 

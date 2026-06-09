@@ -72,6 +72,3 @@ every new account starts with **$0.10 in free credits**, enough for
 | [capy.py](./capy.py) | Capy Puzzle |
 | [yidun.py](./yidun.py) | NetEase Yidun |
 | [balance_check.py](./balance_check.py) | Print account balance |
-
-hCaptcha is in active development and not yet on the price list — see
-the [roadmap in the main README](../README.md#roadmap).
